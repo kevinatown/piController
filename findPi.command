@@ -37,7 +37,7 @@ if ! [ -z $piadd ]; then
 	echo ''
 	echo 'Please go to '+$fullIp+' from a browser.'
 	echo ''
-	open -a /Applications/Google\ Chrome.app $fullIp
+	open http://$piadd:8090
 	exit 0
 else
 	echo ''
@@ -49,10 +49,9 @@ else
 	echo ''
 	echo ''
 	for x in $possips; do
-		ip='http://'${x}':8090'
-		echo trying $ip
+		echo trying http://$x:8090
 		echo ''
-		open -a /Applications/Google\ Chrome.app ${ip}
+		open http://$x:8090
 	done
 
 	echo ''
