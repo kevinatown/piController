@@ -19,9 +19,14 @@ else
 fi
 
 # ping -q -w 1 -c 1 `ip r | grep default | cut -d ' ' -f 3` 1>/dev/null
-
+grep 'wifi' /continue.conf 1>/dev/null
 if [ $? == 0 ]; then
-  echo "connected to the internet\n" 
+  echo "connected to the internet\n"
+  systemctl stop hostapd
+  systemctl stop dnsmasq
+
+  ifdown wlan0 && ifup wlan0
+  wpa_cli -i wlan0 reconfigure
 else
   echo "not connected to the internet\n"
   echo "Starting hotspot"
@@ -30,6 +35,7 @@ else
   systemctl start dnsmasq
   # systemctl restart networking
   ifdown wlan0 && ifup wlan0
+  # wpa_cli -i wlan0 reconfigure
 
   echo "Running the piController app"
   /home/pi/piController/piController/main.py
