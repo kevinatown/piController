@@ -24,7 +24,7 @@ if [ $? == 0 ]; then
   echo "connected to the internet"
   systemctl stop hostapd
   systemctl stop dnsmasq
-
+  cp /piController/configs/interfaces.wifi /etc/network/interfaces
   ifdown wlan0 && ifup wlan0
   wpa_cli -i wlan0 reconfigure
 else
