@@ -19,6 +19,8 @@ else
 fi
 
 # ping -q -w 1 -c 1 `ip r | grep default | cut -d ' ' -f 3` 1>/dev/null
+# all of this logic should be done befoer a reboot
+
 grep 'wifi' /continue.conf 1>/dev/null
 if [ $? == 0 ]; then
   echo "connected to the internet"
