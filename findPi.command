@@ -30,14 +30,14 @@ echo ''
 piadd=`nmap -sn $iprange | grep 'raspberrypi' | grep -o '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}'`
 
 if ! [ -z $piadd ]; then
-	fullIp='http://'+$piadd+':8090'
+	fullIp='http://'+$piadd
 	echo ''
 	echo 'Pi was found at:'
 	echo $piadd
 	echo ''
 	echo 'Please go to '+$fullIp+' from a browser.'
 	echo ''
-	open http://$piadd:8090
+	open http://$piadd
 	exit 0
 else
 	echo ''
@@ -49,9 +49,9 @@ else
 	echo ''
 	echo ''
 	for x in $possips; do
-		echo trying http://$x:8090
+		echo trying http://$x
 		echo ''
-		open http://$x:8090
+		open http://$x
 	done
 
 	echo ''

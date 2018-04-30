@@ -36,6 +36,15 @@ echo rsn_pairwise=CCMP >> /etc/hostapd/hostapd.conf
 
 echo DAEMON_CONF="/etc/hostapd/hostapd.conf" >> /etc/default/hostapd
 
+# add alias
+echo "192.168.4.1    $(cat /etc/hostname).pi" >> /etc/hosts
+
+# fix net
+echo "iface wlan0 inet static" >> /etc/network/interfaces
+echo "addresss 192.168.4.1" >> /etc/network/interfaces
+echo "netmask 255.255.255.0" >> /etc/network/interfaces
+echo "broadcast 255.0.0.0" >> /etc/network/interfaces
+
 systemctl start hostapd
 systemctl start dnsmasq
 
@@ -43,3 +52,6 @@ systemctl start dnsmasq
 echo net.ipv4.ip_forward=1 >> /etc/sysctl.conf
 iptables -t nat -A  POSTROUTING -o eth0 -j MASQUERADE
 sh -c "iptables-save > /etc/iptables.ipv4.nat"
+
+# add to /etc/rc.local
+# iptables-restore < /etc/iptables.ipv4.nat

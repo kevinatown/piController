@@ -1,5 +1,8 @@
+#!/usr/bin/env python
+
 from gopigo import *
 import os
+import shutil
 from flask import Flask, send_from_directory, jsonify
 
 app = Flask(__name__, static_folder='./build')
@@ -35,6 +38,31 @@ def show_post(num):
   except:
     return jsonify(success=False)
 
+@app.route('/config/', methods=['POST'])
+def setConfigs():
+  conftype = request.args.get('conf')
+  if (conftype == 'wifi'):
+    ssid = request.args.get('ssid')
+    pw = request.args.get('pw')
+    cmd = 'wpa_passphrase %s %s | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf > /dev/null' % (ssid, pw)
+    os.system(cmd)
+    f = open('/continue.conf', 'w')
+    f.write('wifi')
+    f.close()
+    shutil.copy('/piController/configs/interfaces.wifi', '/etc/network/interfaces')
+  elif (conftype == 'hotspot'):
+    f = open('/continue.conf', 'w')
+    f.write('wifi')
+    f.close()
+    shutil.copy('/piController/configs/interfaces.hotspot', '/etc/network/interfaces')
+  else:
+    return jsonify(success=False)
+
+@app.route('/halt/')
+def haltPi():
+  os.system('sudo shutdown -r now')
+      
+
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', port=8090)
+  app.run(host='0.0.0.0', port=80)
   
