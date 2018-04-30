@@ -5,15 +5,15 @@ import os
 import shutil
 from flask import Flask, send_from_directory, jsonify
 
-app = Flask(__name__, static_folder='/piController/piController/pi-frontend/build')
+app = Flask(__name__, static_folder='./build')
 
 @app.route("/")
 def root():
-  return send_from_directory('/piController/piController/pi-frontend/build/','index.html')
+  return send_from_directory('./pi-frontend/build/','index.html')
 
 @app.route("/static/<path:path>")
 def static_files(path):
-  return send_from_directory('/piController/piController/pi-frontend/build/static/', path)
+  return send_from_directory('./pi-frontend/build/static/', path)
 
 @app.route('/move/<int:num>')
 def show_post(num):
